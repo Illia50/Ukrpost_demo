@@ -1,5 +1,6 @@
-package org.example.ukrpost;
+package org.example.ukrpost.repository;
 
+import org.example.ukrpost.entity.OperatorAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

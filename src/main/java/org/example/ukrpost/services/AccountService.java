@@ -1,6 +1,10 @@
-package org.example.ukrpost;
+package org.example.ukrpost.services;
 
 import jakarta.transaction.Transactional;
+import org.example.ukrpost.entity.OperatorAccount;
+import org.example.ukrpost.repository.OperatorAccountRepository;
+import org.example.ukrpost.entity.ParcelLocation;
+import org.example.ukrpost.repository.ParcelLocationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -17,11 +21,9 @@ public class AccountService {
     @Transactional
     public void createAccount (String username, String role, UUID locationId){
         OperatorAccount operatorAccount = new OperatorAccount();
-        operatorAccount.setId(UUID.randomUUID());
         operatorAccount.setUsername(username);
         operatorAccount.setRole(role);
-
-        Parcel_location location = parcelLocationRepository.findById(locationId).orElseThrow(
+        ParcelLocation location = parcelLocationRepository.findById(locationId).orElseThrow(
                 () -> new RuntimeException("Such department doesn't exist")
         );
         operatorAccount.setLocation(location);
@@ -35,7 +37,7 @@ public class AccountService {
         );
         operatorAccount.setUsername(username);
         operatorAccount.setRole(role);
-        Parcel_location location = parcelLocationRepository.findById(locationId).orElseThrow(
+        ParcelLocation location = parcelLocationRepository.findById(locationId).orElseThrow(
                 () -> new RuntimeException("Such department doesn't exist")
         );
         operatorAccount.setLocation(location);

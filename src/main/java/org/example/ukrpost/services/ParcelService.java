@@ -1,5 +1,10 @@
-package org.example.ukrpost;
+package org.example.ukrpost.services;
 
+import org.example.ukrpost.entity.*;
+import org.example.ukrpost.repository.OperatorAccountRepository;
+import org.example.ukrpost.repository.ParcelRepository;
+import org.example.ukrpost.repository.TrackingHistoryRepository;
+import org.example.ukrpost.repository.TruckRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,47 +52,47 @@ public class ParcelService {
         parcel.setDescription(description);
         parcel.setStatus("CREATED");
 
-        Tracking_history tracking_history = new Tracking_history();
-        tracking_history.setId(UUID.randomUUID());
-        tracking_history.setParcel(parcel);
-        tracking_history.setStatus("CREATED");
-        tracking_history.setUpdatedAt(time_now);
-        tracking_history.setLocation(null);
-        tracking_history.setTruck(null);
-        tracking_history.setAccount(null);
+        TrackingHistory trackingHistory = new TrackingHistory();
+        trackingHistory.setId(UUID.randomUUID());
+        trackingHistory.setParcel(parcel);
+        trackingHistory.setStatus("CREATED");
+        trackingHistory.setUpdated_at(time_now);
+        trackingHistory.setLocation(null);
+        trackingHistory.setTruck(null);
+        trackingHistory.setOperatorAccount(null);
 
         parcelRepository.save(parcel);
-        trackingHistoryRepository.save(tracking_history);
+        trackingHistoryRepository.save(trackingHistory);
     }
 
     public void loadTruck (Parcel parcel, LocalDateTime time_now, Truck truck, OperatorAccount operatorAccount){
 
-        parcel.setCurrentTruck(truck);
+        parcel.setTruck(truck);
         parcel.setStatus("IN TRANSIT");
-        parcel.setCurrentLocation(null);
-        Tracking_history tracking_history = new Tracking_history();
+        parcel.setParcelLocation(null);
+        TrackingHistory tracking_history = new TrackingHistory();
         tracking_history.setParcel(parcel);
         tracking_history.setStatus("IN TRANSIT");
-        tracking_history.setUpdatedAt(time_now);
+        tracking_history.setUpdated_at(time_now);
         tracking_history.setLocation(null);
         tracking_history.setTruck(truck);
-        tracking_history.setAccount(operatorAccount);
+        tracking_history.setOperatorAccount(operatorAccount);
         parcelRepository.save(parcel);
         truckRepository.save(truck);
         trackingHistoryRepository.save(tracking_history);
     }
 
-    public void arrivedToPostOffice (Parcel parcel, Parcel_location parcelLocation, OperatorAccount operatorAccount, LocalDateTime time_now){
-        parcel.setCurrentLocation(parcelLocation);
+    public void arrivedToPostOffice (Parcel parcel, ParcelLocation parcelLocation, OperatorAccount operatorAccount, LocalDateTime time_now){
+        parcel.setParcelLocation(parcelLocation);
         parcel.setStatus("ARRIVED");
-        parcel.setCurrentTruck(null);
-        Tracking_history tracking_history = new Tracking_history();
+        parcel.setTruck(null);
+        TrackingHistory tracking_history = new TrackingHistory();
         tracking_history.setParcel(parcel);
         tracking_history.setStatus("ARRIVED");
-        tracking_history.setUpdatedAt(time_now);
+        tracking_history.setUpdated_at(time_now);
         tracking_history.setLocation(parcelLocation);
         tracking_history.setTruck(null);
-        tracking_history.setAccount(operatorAccount);
+        tracking_history.setOperatorAccount(operatorAccount);
         parcelRepository.save(parcel);
         trackingHistoryRepository.save(tracking_history);
     }
